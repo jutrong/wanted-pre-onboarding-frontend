@@ -4,14 +4,14 @@ import "./Signup.scss";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
-  const [psd, setPsd] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
   const handlePsd = (e) => {
-    setPsd(e.target.value);
+    setPassword(e.target.value);
   };
   // 이메일 정규식
   const emailRegex = /\S+@\S+\.\S+/;
@@ -19,7 +19,7 @@ const Signup = () => {
   // 이메일 유효성 검사
   const isEmailValid = emailRegex.test(email);
   // 비밀번호 유효성 검사
-  const isPasswordValid = psd.length >= 8;
+  const isPasswordValid = password.length >= 8;
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -29,24 +29,31 @@ const Signup = () => {
     } else if (!isPasswordValid) {
       alert("비밀번호는 8자리 이상 입력해주세요.");
     } else {
-      fetch("/auth/signup", {
+      fetch("https://www.pre-onboarding-selection-task.shop/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
-          password: psd,
+          password: password,
         }),
       })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          navigate("/signin");
+        .then((response) => {
+          if (response.status === 201) {
+            console.log("회원가입이 성공적으로 완료되었습니다.");
+            navigate("/signin");
+          } else {
+            console.error(response);
+          }
+        })
+        .catch((error) => {
+          console.error("API 호출 중 오류가 발생하였습니다.", error);
         });
     }
   };
   return (
     <div className="signup">
       <div className="signup-box">
+        <h2>회원가입</h2>
         <input
           data-testid="email-input"
           placeholder="이메일을 입력해주세요."
