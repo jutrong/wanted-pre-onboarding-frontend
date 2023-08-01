@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.scss";
 
@@ -6,6 +6,14 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      navigate("/todo");
+    }
+  }, []);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -36,18 +44,10 @@ const Signup = () => {
           email: email,
           password: password,
         }),
-      })
-        .then((response) => {
-          if (response.status === 201) {
-            console.log("회원가입이 성공적으로 완료되었습니다.");
-            navigate("/signin");
-          } else {
-            console.error(response);
-          }
-        })
-        .catch((error) => {
-          console.error("API 호출 중 오류가 발생하였습니다.", error);
-        });
+      }).then((data) => {
+        console.log(data);
+        navigate("/signin");
+      });
     }
   };
   return (
