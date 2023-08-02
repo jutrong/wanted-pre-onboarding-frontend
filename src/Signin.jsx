@@ -7,7 +7,7 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
 
     if (token) {
       navigate("/todo");
@@ -48,7 +48,7 @@ const Signin = () => {
         .then((data) =>
           data.access_token
             ? (navigate("/todo"),
-              window.localStorage.setItem("token", data.access_token))
+              window.localStorage.setItem("access_token", data.access_token))
             : alert("비밀번호가 잘못되었습니다!")
         );
     }
