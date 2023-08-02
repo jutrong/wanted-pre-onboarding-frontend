@@ -1,34 +1,22 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import TodoList from "./TodoList";
 
 const Todo = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (!token) {
       navigate("/signin");
     }
   }, [navigate]);
+
   return (
-    <div className="todo">
-      <input data-testid="new-todo-input" />
-      <button data-testid="new-todo-add-button">추가</button>
-      <Todolist />
+    <div className="title">
+      오늘의 할 일 ()
+      <TodoList />
     </div>
   );
 };
 
 export default Todo;
-
-export const Todolist = () => {
-  return (
-    <div>
-      <li>
-        <label>
-          <input type="checkbox" />
-          <span>TODO 1</span>
-        </label>
-      </li>
-    </div>
-  );
-};
