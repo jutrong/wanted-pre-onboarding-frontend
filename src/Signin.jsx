@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signin.scss";
+import Header from "./Header";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -54,29 +55,32 @@ const Signin = () => {
     }
   };
   return (
-    <div className="signin">
-      <div className="signin-box">
-        <h2>로그인</h2>
-        <input
-          data-testid="email-input"
-          placeholder="이메일을 입력해주세요."
-          onChange={handleEmail}
-        />
-        <input
-          type="password"
-          data-testid="password-input"
-          placeholder="비밀번호를 입력해주세요."
-          onChange={handlePsd}
-        />
-        <button
-          data-testid="signin-button"
-          onClick={onSubmit}
-          disabled={!isEmailValid || !isPasswordValid}
-        >
-          로그인
-        </button>
+    <>
+      <Header />
+      <div className="signin">
+        <div className="signin-box">
+          <h2>로그인</h2>
+          <input
+            data-testid="email-input"
+            placeholder="이메일을 입력해주세요."
+            onChange={handleEmail}
+          />
+          <input
+            type="password"
+            data-testid="password-input"
+            placeholder="비밀번호를 입력해주세요."
+            onChange={handlePsd}
+          />
+          <button
+            data-testid="signin-button"
+            onClick={onSubmit}
+            disabled={!isEmailValid || !isPasswordValid}
+          >
+            로그인
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
