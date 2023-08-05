@@ -49,8 +49,8 @@ const Signin = () => {
         .then((data) =>
           data.access_token
             ? (navigate("/todo"),
-              window.localStorage.setItem("access_token", data.access_token))
-            : alert("비밀번호가 잘못되었습니다!")
+              localStorage.setItem("access_token", data.access_token))
+            : console.log(data.message)
         );
     }
   };

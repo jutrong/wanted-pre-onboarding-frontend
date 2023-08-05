@@ -32,7 +32,6 @@ const Signup = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     if (!isEmailValid) {
       alert("올바른 이메일 주소를 입력해주세요.");
     } else if (!isPasswordValid) {
@@ -46,8 +45,11 @@ const Signup = () => {
           password: password,
         }),
       }).then((data) => {
-        console.log(data);
-        navigate("/signin");
+        if (data.status === 201) {
+          navigate("/signin");
+        } else {
+          console.log(data);
+        }
       });
     }
   };
