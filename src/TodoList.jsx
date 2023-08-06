@@ -93,9 +93,6 @@ const TodoList = () => {
     setUpdateId(null);
   };
 
-  // const handleSubmitUpdate = (id) => {
-  //   update(id);
-  // };
   const update = (id) => {
     const todoToUpdate = todos.find((todo) => todo.id === id);
 
