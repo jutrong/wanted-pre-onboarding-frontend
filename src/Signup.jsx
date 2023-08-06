@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.scss";
 import Header from "./Header";
@@ -7,7 +7,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -16,12 +16,10 @@ const Signup = () => {
     }
   }, []);
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
-  const handlePsd = (e) => {
-    setPassword(e.target.value);
-  };
+  const handleEmail = useCallback((e) => setEmail(e.target.value), []);
+
+  const handlePsd = useCallback((e) => setPassword(e.target.value), []);
+
   // 이메일 정규식
   const emailRegex = /\S+@\S+\.\S+/;
 
