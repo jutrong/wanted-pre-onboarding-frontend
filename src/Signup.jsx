@@ -51,7 +51,7 @@ const Signup = () => {
           <input
             type="password"
             data-testid="password-input"
-            placeholder="비밀번호를 입력해주세요."
+            placeholder="비밀번호를 입력해주세요"
             onChange={(e) => setPassword(e.target.value)}
           />
           <button
