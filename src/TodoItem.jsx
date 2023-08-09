@@ -56,7 +56,7 @@ const TodoItem = ({ todos, setTodos, todo, handleTodoItemClick }) => {
     });
   };
 
-  const handleUpdate = (id) => {
+  const updateBtnClick = (id) => {
     const todoToUpdate = todos.find((todo) => todo.id === id);
     if (todoToUpdate) {
       setIsUpdateClick(true);
@@ -64,12 +64,12 @@ const TodoItem = ({ todos, setTodos, todo, handleTodoItemClick }) => {
     }
   };
 
-  const handleCancelUpdate = () => {
+  const updateCancleClick = () => {
     setIsUpdateClick(false);
     setUpdateId(null);
   };
 
-  const update = (id) => {
+  const updateSubmitClick = (id) => {
     const todoToUpdate = todos.find((todo) => todo.id === id);
 
     fetch(`https://www.pre-onboarding-selection-task.shop/todos/${id}`, {
@@ -108,11 +108,11 @@ const TodoItem = ({ todos, setTodos, todo, handleTodoItemClick }) => {
               ></input>
               <button
                 data-testid="submit-button"
-                onClick={() => update(todo.id)}
+                onClick={() => updateSubmitClick(todo.id)}
               >
                 제출
               </button>
-              <button data-testid="cancel-button" onClick={handleCancelUpdate}>
+              <button data-testid="cancel-button" onClick={updateCancleClick}>
                 취소
               </button>
             </div>
@@ -131,7 +131,7 @@ const TodoItem = ({ todos, setTodos, todo, handleTodoItemClick }) => {
               </span>
               <button
                 onClick={() => {
-                  handleUpdate(todo.id);
+                  updateBtnClick(todo.id);
                 }}
                 className="update-btn"
               >

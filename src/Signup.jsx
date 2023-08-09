@@ -23,7 +23,7 @@ const Signup = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+    
     fetch("https://www.pre-onboarding-selection-task.shop/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

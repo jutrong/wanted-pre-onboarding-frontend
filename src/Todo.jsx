@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import TodoItem from "./TodoItem";
 import "./Todo.scss";
@@ -7,6 +7,7 @@ const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [value, setValue] = useState("");
   const [selectedTodo, setSelectedTodo] = useState(null);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,11 +26,11 @@ const Todo = () => {
     })
       .then((res) => res.json())
       .then((data) => setTodos(data));
-  }, [todos]);
+  }, []);
 
   const onChange = useCallback((e) => setValue(e.target.value), []);
 
-  const onSubmit = (e) => {
+  const addTodo = (e) => {
     e.preventDefault();
     setValue("");
     fetch("https://www.pre-onboarding-selection-task.shop/todos", {
@@ -44,6 +45,7 @@ const Todo = () => {
     })
       .then((res) => res.json())
       .then((data) => setTodos((prevTodos) => [...prevTodos, data]));
+    inputRef.current.focus();
   };
 
   const handleTodoItemClick = (todo) => {
@@ -70,10 +72,12 @@ const Todo = () => {
               <input
                 className="plus-todo"
                 data-testid="new-todo-input"
+                ref={inputRef}
                 value={value}
                 onChange={onChange}
+                placeholder="할 일을 입력해주세요."
               />
-              <button data-testid="new-todo-add-button" onClick={onSubmit}>
+              <button data-testid="new-todo-add-button" onClick={addTodo}>
                 추가
               </button>
             </div>
