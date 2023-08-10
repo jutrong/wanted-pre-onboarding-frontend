@@ -7,8 +7,14 @@ const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [value, setValue] = useState("");
   const [selectedTodo, setSelectedTodo] = useState(null);
-  const inputRef = useRef(null);
+  const inputRef = useRef();
   const navigate = useNavigate();
+
+  const BASE_URL = "https://www.pre-onboarding-selection-task.shop";
+  const getAuthHeaders = () => ({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -18,7 +24,7 @@ const Todo = () => {
   }, []);
 
   useEffect(() => {
-    fetch("https://www.pre-onboarding-selection-task.shop/todos", {
+    fetch(`${BASE_URL}/todos`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -30,23 +36,29 @@ const Todo = () => {
 
   const onChange = useCallback((e) => setValue(e.target.value), []);
 
-  const addTodo = (e) => {
-    e.preventDefault();
-    setValue("");
-    fetch("https://www.pre-onboarding-selection-task.shop/todos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
-      body: JSON.stringify({
-        todo: value,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => setTodos((prevTodos) => [...prevTodos, data]));
-    inputRef.current.focus();
-  };
+  const addTodoHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setValue("");
+
+      try {
+        const response = await fetch(`${BASE_URL}/todos`, {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({
+            todo: value,
+          }),
+        });
+        const data = await response.json();
+        setTodos((prevTodos) => [...prevTodos, data]);
+      } catch (error) {
+        console.error("Error adding todo:", error);
+      }
+
+      inputRef.current.focus();
+    },
+    [value]
+  );
 
   const handleTodoItemClick = (todo) => {
     setSelectedTodo(todo);
@@ -68,19 +80,22 @@ const Todo = () => {
         <p>Jutrong's Todo LIST</p>
         <div>
           <div className="todo-list">
-            <div className="create-todo">
+            <form className="create-todo">
               <input
                 className="plus-todo"
                 data-testid="new-todo-input"
                 ref={inputRef}
                 value={value}
                 onChange={onChange}
-                placeholder="할 일을 입력해주세요."
+                placeholder="할 일을 입력해주세요"
               />
-              <button data-testid="new-todo-add-button" onClick={addTodo}>
+              <button
+                data-testid="new-todo-add-button"
+                onClick={addTodoHandler}
+              >
                 추가
               </button>
-            </div>
+            </form>
             <div className="todoitems">
               {todos.map((todo) => (
                 <TodoItem
@@ -89,6 +104,8 @@ const Todo = () => {
                   todos={todos}
                   setTodos={setTodos}
                   handleTodoItemClick={handleTodoItemClick}
+                  BASE_URL={BASE_URL}
+                  getAuthHeaders={getAuthHeaders}
                 />
               ))}
             </div>
